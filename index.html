@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+    <title>Stencil Component Starter</title>
+
+    <script type="module"
+        src="node_modules/ang-cln-2/dist/anghami-clone/anghami-clone.esm.js"></script>
+    <script nomodule="" src="node_modules/ang-cln-2/dist/anghami-clone/anghami-clone.js"></script>
+
+    <script src="node_modules/anghamigateway/dist/anghamigateway.umd.js"></script>
+    <script src="node_modules/anghamimediaengine/dist/anghamimediaengine.umd.js"></script>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Almo7aya/anghami-web-clone@0.0.3/css/styles-edited.css">
+
+    <style>
+        .header-user-profile {
+            background: none;
+        }
+
+        .player-play i::after {
+            content: ''
+        }
+
+        .material-icons.active {
+            background-color: var(--main-ang-color);
+        }
+    </style>
+
+</head>
+
+<body>
+    <section class="main-grid-container">
+
+        <ang-cln-header></ang-cln-header>
+
+        <!-- <ang-cln-navbar></ang-cln-navbar> -->
+
+        <ang-cln-player onTogglePlayState='alert(123)' id="player"></ang-cln-player>
+
+        <script>
+            const angMedEng = new anghamimediaengine();
+            const angPlayer = angMedEng.player;
+            const playerElement = document.getElementById('player');
+            angPlayer.shuffle$.subscribe(sh => {
+                playerElement.setAttribute('shuffle-state', sh);
+            });
+            angPlayer.currentTrack$.subscribe(sh => {
+                playerElement.setAttribute('track-title', sh.title)
+                playerElement.setAttribute('artist', sh.artist)
+                playerElement.setAttribute('artwork-id', sh.coverArt)
+                playerElement.setAttribute('duration', sh.duration)
+            });
+            angPlayer.repeat$.subscribe(sh => {
+                playerElement.setAttribute('repeat-state', sh);
+            });
+            angPlayer.playstate$.subscribe(sh => {
+                playerElement.setAttribute('play-state', sh);
+            });
+            angPlayer.progress$.subscribe(sh => {
+                playerElement.setAttribute('progress', sh);
+            });
+
+            playerElement.addEventListener('togglePlayState', () => {
+                if (angPlayer.playing) {
+                    angPlayer.pause();
+                } else {
+                    angPlayer.play();
+                }
+            });
+
+            playerElement.addEventListener('next', async () => {
+                angPlayer.next();
+                await angPlayer.load();
+            });
+
+            playerElement.addEventListener('previous', async () => {
+                angPlayer.previous();
+                await angPlayer.load();
+            });
+
+            playerElement.addEventListener('seekTo', (a) => {
+                angPlayer.currentTime = (angPlayer.duration * a.detail) / 100
+            });
+
+            angPlayer.getSong(52880517).then(() => {
+                angPlayer.load();
+            });
+        </script>
+    </section>
+</body>
+
+</html>

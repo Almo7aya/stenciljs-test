@@ -1,0 +1,16 @@
+{
+  "name": "test-com",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Ali Almohaya <alialmohaya@gmail.com> (almo7aya.github.io)",
+  "license": "MIT",
+  "dependencies": {
+    "ang-cln-2": "0.0.5",
+    "anghamimediaengine": "git+ssh://git@github.com/anghami/js-media-engine.git"
+  }
+}
